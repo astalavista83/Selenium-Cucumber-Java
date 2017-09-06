@@ -60,7 +60,7 @@ import cucumber.api.junit.Cucumber;
 @CucumberOptions(
 	plugin = {"html:target/cucumberHtmlReport"},
 	features = "classpath:features",
-	glue = {"info.seleniumcucumber.stepdefinitions"}
+	glue = {"info.seleniumcucumber.stepdefinitions", "your.test.package"}
 )
 
 public class RunCukeTest {
@@ -71,6 +71,12 @@ Maven/Gradle Dependency
 -----------------------
 
 See https://jitpack.io/#geekdenz/selenium-cucumber-java .
+
+Example project
+---------------
+
+See https://github.com/geekdenz/selenium-cucumber-java-examples for an example
+how this works.
 
 License
 -------

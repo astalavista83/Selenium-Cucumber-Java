@@ -5,6 +5,7 @@ import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
 import env.BaseTest;
+import env.DriverUtil;
 
 public class ProgressMethods extends SelectElementByType implements BaseTest
 {
@@ -28,7 +29,7 @@ public class ProgressMethods extends SelectElementByType implements BaseTest
 	public void waitForElementToDisplay(String accessType,String accessName,String duration)
 	{
 		By byEle = getelementbytype(accessType, accessName);
-		WebDriverWait wait = (new WebDriverWait(driver,Integer.parseInt(duration)*1000));
+		WebDriverWait wait = (new WebDriverWait(DriverUtil.getDefaultDriver(),Integer.parseInt(duration)*1000));
 		wait.until(ExpectedConditions.visibilityOfElementLocated(byEle));
 	}
 		
@@ -40,7 +41,7 @@ public class ProgressMethods extends SelectElementByType implements BaseTest
 	public void waitForElementToClick(String accessType,String accessName,String duration)
 	{
 		By byEle = getelementbytype(accessType, accessName);
-		WebDriverWait wait = (new WebDriverWait(driver,Integer.parseInt(duration)*1000));
+		WebDriverWait wait = (new WebDriverWait(DriverUtil.getDefaultDriver(),Integer.parseInt(duration)*1000));
 		wait.until(ExpectedConditions.elementToBeClickable(byEle));
 	}
 	

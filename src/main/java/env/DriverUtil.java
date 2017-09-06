@@ -39,6 +39,10 @@ public class DriverUtil {
         return driver;
     }
 
+	public static WebDriverWait getDefaultWait() {
+		return new WebDriverWait(getDefaultDriver(), DEFAULT_WAIT);
+	}
+
     /**
      * By default to web driver will be PhantomJS
      *
@@ -101,11 +105,11 @@ public class DriverUtil {
 		if (driver != null) {
 			try {
 				driver.close();
-				driver.quit(); // fails in current geckodriver! TODO: Fixme
+				driver = null;
+				//driver.quit(); // fails in current geckodriver! TODO: Fixme
 			} catch (NoSuchMethodError nsme) { // in case quit fails
 			} catch (NoSuchSessionException nsse) { // in case close fails
 			} catch (SessionNotCreatedException snce) {} // in case close fails
-			driver = null;
 		}
 	}
 }

@@ -6,6 +6,7 @@ import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 
 import env.BaseTest;
+import env.DriverUtil;
 
 public class ClickElementsMethods extends SelectElementByType implements BaseTest
 {
@@ -18,7 +19,7 @@ public class ClickElementsMethods extends SelectElementByType implements BaseTes
 	*/
 	public void click(String accessType, String accessName)
 	{
-		element = wait.until(ExpectedConditions.presenceOfElementLocated(getelementbytype(accessType, accessName)));
+		element = DriverUtil.getDefaultWait().until(ExpectedConditions.presenceOfElementLocated(getelementbytype(accessType, accessName)));
 		element.click();
 	}
 	
@@ -28,8 +29,8 @@ public class ClickElementsMethods extends SelectElementByType implements BaseTes
 	*/
 	public void clickForcefully(String accessType, String accessName)
 	{
-		element = wait.until(ExpectedConditions.presenceOfElementLocated(getelementbytype(accessType, accessName)));
-		JavascriptExecutor executor = (JavascriptExecutor)driver;
+		element = DriverUtil.getDefaultWait().until(ExpectedConditions.presenceOfElementLocated(getelementbytype(accessType, accessName)));
+		JavascriptExecutor executor = (JavascriptExecutor)DriverUtil.getDefaultDriver();
 		executor.executeScript("arguments[0].click();",element);
 	}
 	
@@ -39,9 +40,9 @@ public class ClickElementsMethods extends SelectElementByType implements BaseTes
 	*/
 	public void doubleClick(String accessType, String accessValue)
 	{
-		element = wait.until(ExpectedConditions.presenceOfElementLocated(getelementbytype(accessType, accessValue)));
+		element = DriverUtil.getDefaultWait().until(ExpectedConditions.presenceOfElementLocated(getelementbytype(accessType, accessValue)));
 
-		Actions action = new Actions(driver);
+		Actions action = new Actions(DriverUtil.getDefaultDriver());
 		action.moveToElement(element).doubleClick().perform();
 	}
 }
