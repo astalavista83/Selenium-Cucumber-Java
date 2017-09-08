@@ -2,6 +2,7 @@ package info.seleniumcucumber.stepdefinitions;
 
 import cucumber.api.Scenario;
 import cucumber.api.java.After;
+import cucumber.api.java.Before;
 import java.io.IOException;
 
 import methods.TestCaseFailed;
@@ -17,8 +18,13 @@ import org.openqa.selenium.TakesScreenshot;
 import org.openqa.selenium.WebDriver;
 
 public class PredefinedStepDefinitions implements BaseTest {
-	protected WebDriver driver = DriverUtil.getDefaultDriver();
+	protected WebDriver driver;
 	//Navigation Steps
+	
+	@Before
+	public void before() {
+		driver = DriverUtil.getDefaultDriver();
+	}
 	
 	//Step to navigate to specified URL
 	@Then("^I navigate to \"([^\"]*)\"$")
@@ -45,7 +51,7 @@ public class PredefinedStepDefinitions implements BaseTest {
 	@Then("^I refresh page$")
 	public void refresh_page()
 	{
-		driver.navigate().refresh();
+		DriverUtil.getDefaultDriver().navigate().refresh();
 	}
 	
 	// Switch between windows
@@ -529,7 +535,7 @@ public class PredefinedStepDefinitions implements BaseTest {
 	@After
 	public final void takeScreenShot(Scenario scenario) {
 		if (scenario.isFailed()) {
-			TakesScreenshot ts = (TakesScreenshot) driver;
+			TakesScreenshot ts = (TakesScreenshot) DriverUtil.getDefaultDriver();
 			File srcFile = ts.getScreenshotAs(OutputType.FILE);
 			try {
 				ScenarioImpl impl = (ScenarioImpl) scenario;
@@ -542,8 +548,8 @@ public class PredefinedStepDefinitions implements BaseTest {
 				*/
 				String name = "Screenshots/" + impl.getId().replaceAll("\\W", "_");
 				FileUtils.copyFile(srcFile, new File(name + ".png"));
-				System.out.println("URL: " + driver.getCurrentUrl());
-				System.out.println("src: " + driver.getPageSource());
+				System.out.println("URL: " + DriverUtil.getDefaultDriver().getCurrentUrl());
+				System.out.println("src: " + DriverUtil.getDefaultDriver().getPageSource());
 			} catch (IOException ex) {
 				//Logger.getLogger(SmapScenario.class.getName()).log(Level.SEVERE, null, ex);
 			}

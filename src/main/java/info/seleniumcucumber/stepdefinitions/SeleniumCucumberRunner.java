@@ -14,11 +14,11 @@ import org.junit.runner.RunWith;
  * @author heuert
  */
 
-@RunWith(Cucumber.class)
+//@RunWith(Cucumber.class)
 //@Cucumber.Options()
 //@Cucumber.Options(format = {/*"pretty",*/ /*"json:target/cucumber.json",*/ "html:build/cucumber-html-report"})
 //@Cucumber.Options(name = {"ContactUs"})
-@CucumberOptions(plugin = {"pretty", "html:build/cucumber-html-report"})
+//@CucumberOptions(plugin = {"pretty", "html:build/cucumber-html-report"})
 public class SeleniumCucumberRunner {
 	
 }

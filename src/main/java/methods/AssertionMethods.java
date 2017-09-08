@@ -21,7 +21,7 @@ public class AssertionMethods extends SelectElementByType implements BaseTest
 	 * */
 	public String getPageTitle()
 	{
-		return driver.getTitle();
+		return DriverUtil.getDefaultDriver().getTitle();
 	}
 	
 	/** Method to verify page title
@@ -70,7 +70,7 @@ public class AssertionMethods extends SelectElementByType implements BaseTest
 	 */
 	public String getElementText(String accessType, String accessName)
 	{
-		element = wait.until(ExpectedConditions.presenceOfElementLocated(getelementbytype(accessType, accessName)));
+		element = DriverUtil.getDefaultWait().until(ExpectedConditions.presenceOfElementLocated(getelementbytype(accessType, accessName)));
 		return element.getText();
 		
 	}
@@ -126,7 +126,7 @@ public class AssertionMethods extends SelectElementByType implements BaseTest
 	*/
 	public boolean isElementEnabled(String accessType, String accessName)
 	{
-		element = wait.until(ExpectedConditions.presenceOfElementLocated(getelementbytype(accessType, accessName)));
+		element = DriverUtil.getDefaultWait().until(ExpectedConditions.presenceOfElementLocated(getelementbytype(accessType, accessName)));
 		return element.isEnabled();
 	}
 	
@@ -158,7 +158,7 @@ public class AssertionMethods extends SelectElementByType implements BaseTest
 	*/
 	public String getElementAttribute(String accessType,String accessName,String attributeName)
 	{
-		element = wait.until(ExpectedConditions.presenceOfElementLocated(getelementbytype(accessType, accessName)));
+		element = DriverUtil.getDefaultWait().until(ExpectedConditions.presenceOfElementLocated(getelementbytype(accessType, accessName)));
 		return element.getAttribute(attributeName);
 	}
 	
@@ -191,7 +191,7 @@ public class AssertionMethods extends SelectElementByType implements BaseTest
 	*/
 	public boolean isElementDisplayed(String accessType,String accessName)
 	{
-		element = wait.until(ExpectedConditions.presenceOfElementLocated(getelementbytype(accessType, accessName)));
+		element = DriverUtil.getDefaultWait().until(ExpectedConditions.presenceOfElementLocated(getelementbytype(accessType, accessName)));
 		return element.isDisplayed();
 	}
 	
@@ -229,7 +229,7 @@ public class AssertionMethods extends SelectElementByType implements BaseTest
 	*/
 	public void isCheckboxChecked(String accessType,String accessName,boolean shouldBeChecked) throws TestCaseFailed
 	{
-		WebElement checkbox = wait.until(ExpectedConditions.presenceOfElementLocated(getelementbytype(accessType, accessName)));
+		WebElement checkbox = DriverUtil.getDefaultWait().until(ExpectedConditions.presenceOfElementLocated(getelementbytype(accessType, accessName)));
 		if((!checkbox.isSelected()) && shouldBeChecked)
 			throw new TestCaseFailed("Checkbox is not checked");
 		else if(checkbox.isSelected() && !shouldBeChecked)
@@ -243,7 +243,7 @@ public class AssertionMethods extends SelectElementByType implements BaseTest
 	*/
 	public void isRadioButtonSelected(String accessType,String accessName,boolean shouldBeSelected) throws TestCaseFailed
 	{
-		WebElement radioButton = wait.until(ExpectedConditions.presenceOfElementLocated(getelementbytype(accessType, accessName)));
+		WebElement radioButton = DriverUtil.getDefaultWait().until(ExpectedConditions.presenceOfElementLocated(getelementbytype(accessType, accessName)));
 		if((!radioButton.isSelected()) && shouldBeSelected)
 			throw new TestCaseFailed("Radio Button not selected");
 		else if(radioButton.isSelected() && !shouldBeSelected)
@@ -253,7 +253,7 @@ public class AssertionMethods extends SelectElementByType implements BaseTest
 	//method to assert option from radio button group is selected/unselected
 	public void isOptionFromRadioButtonGroupSelected(String accessType,String by,String option,String accessName,boolean shouldBeSelected) throws TestCaseFailed
 	{
-		List<WebElement> radioButtonGroup = wait.until(ExpectedConditions.presenceOfAllElementsLocatedBy(getelementbytype(accessType, accessName)));
+		List<WebElement> radioButtonGroup = DriverUtil.getDefaultWait().until(ExpectedConditions.presenceOfAllElementsLocatedBy(getelementbytype(accessType, accessName)));
 		
 		for (WebElement rb : radioButtonGroup) {
 			if(by.equals("value"))
@@ -281,7 +281,7 @@ public class AssertionMethods extends SelectElementByType implements BaseTest
 	 */
 	public String getAlertText()
 	{
-		return driver.switchTo().alert().getText();
+		return DriverUtil.getDefaultDriver().switchTo().alert().getText();
 	}
 	  
 	/**method to check javascript pop-up alert text
@@ -305,7 +305,7 @@ public class AssertionMethods extends SelectElementByType implements BaseTest
 	public void isOptionFromDropdownSelected(String accessType,String by,String option,String accessName,boolean shouldBeSelected) throws TestCaseFailed
 	{
 		Select selectList=null;
-		WebElement dropdown = wait.until(ExpectedConditions.presenceOfElementLocated(getelementbytype(accessType, accessName)));
+		WebElement dropdown = DriverUtil.getDefaultWait().until(ExpectedConditions.presenceOfElementLocated(getelementbytype(accessType, accessName)));
 		selectList = new Select(dropdown);
 		
 		String actualValue="";

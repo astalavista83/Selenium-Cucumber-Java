@@ -25,8 +25,8 @@ public class DriverUtil {
 		if (driver != null) {
 			return driver;
 		}
-        System.setProperty("webdriver.chrome.driver", "./chromedriver");
-        System.setProperty("webdriver.gecko.driver", "./geckodriver");
+        //System.setProperty("webdriver.chrome.driver", "./chromedriver");
+        //System.setProperty("webdriver.gecko.driver", "./geckodriver");
         DesiredCapabilities capabilities = null; //DesiredCapabilities.phantomjs();
 		capabilities = DesiredCapabilities.firefox();
         capabilities.setJavascriptEnabled(true);
@@ -93,14 +93,18 @@ public class DriverUtil {
     public static WebElement waitAndGetElementByCssSelector(WebDriver driver, String selector,
                                                             int seconds) {
         By selection = By.cssSelector(selector);
-        return (new WebDriverWait(driver, seconds)).until( // ensure element is visible!
+        return (new WebDriverWait(DriverUtil.getDefaultDriver(), seconds)).until( // ensure element is visible!
                 ExpectedConditions.visibilityOfElementLocated(selection));
     }
+
+	public static WebDriverWait getDefaultWait() {
+		return new WebDriverWait(DriverUtil.getDefaultDriver(), DEFAULT_WAIT);
+	}
 
 	public static void closeDriver() {
 		if (driver != null) {
 			try {
-				driver.close();
+				//driver.close();
 				driver.quit(); // fails in current geckodriver! TODO: Fixme
 			} catch (NoSuchMethodError nsme) { // in case quit fails
 			} catch (NoSuchSessionException nsse) { // in case close fails

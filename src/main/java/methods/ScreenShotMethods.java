@@ -12,14 +12,12 @@ import org.openqa.selenium.TakesScreenshot;
 
 import env.BaseTest;
 import env.DriverUtil;
-import org.openqa.selenium.WebDriver;
 
 public class ScreenShotMethods implements BaseTest {
-	protected WebDriver driver = DriverUtil.getDefaultDriver();
 	/** Method to take screen shot and save in ./Screenshots folder*/
 	public void takeScreenShot() throws IOException
 	{
-		File scrFile = ((TakesScreenshot)driver).getScreenshotAs(OutputType.FILE);
+		File scrFile = ((TakesScreenshot)DriverUtil.getDefaultDriver()).getScreenshotAs(OutputType.FILE);
 		
 		DateFormat dateFormat = new SimpleDateFormat("yyyyMMddHHmmss");
 		Calendar cal = Calendar.getInstance();
