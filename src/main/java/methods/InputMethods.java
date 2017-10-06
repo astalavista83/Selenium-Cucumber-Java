@@ -2,6 +2,7 @@ package methods;
 
 import java.util.List;
 
+import org.openqa.selenium.WebDriverException;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.Select;
@@ -21,8 +22,14 @@ public class InputMethods extends SelectElementByType implements BaseTest
 	 */
 	public void enterText(String accessType,String text,String accessName)
 	{
-		wait.until(ExpectedConditions.presenceOfElementLocated(getelementbytype(accessType, accessName)));
-		driver.findElement(getelementbytype(accessType, accessName)).sendKeys(text);
+		try {
+			getWait().until(ExpectedConditions.presenceOfElementLocated(getelementbytype(accessType, accessName)));
+			getDriver().findElement(getelementbytype(accessType, accessName)).sendKeys(text);
+		} catch (WebDriverException wde) {
+			System.out.println("WebDriverException");
+			throw  wde;
+		}
+
 	}
 	
 	/** Method to clear text of text field
@@ -31,8 +38,8 @@ public class InputMethods extends SelectElementByType implements BaseTest
 	*/
 	public void clearText(String accessType, String accessName)
 	{
-		wait.until(ExpectedConditions.presenceOfElementLocated(getelementbytype(accessType, accessName)));
-		driver.findElement(getelementbytype(accessType, accessName)).clear();
+		getWait().until(ExpectedConditions.presenceOfElementLocated(getelementbytype(accessType, accessName)));
+		getDriver().findElement(getelementbytype(accessType, accessName)).clear();
 	}
 	
 	/** Method to select element from Dropdown by type
@@ -61,7 +68,7 @@ public class InputMethods extends SelectElementByType implements BaseTest
 	*/
 	public void selectOptionFromDropdown(String accessType, String optionBy, String option, String accessName)
 	{
-		dropdown = wait.until(ExpectedConditions.presenceOfElementLocated(getelementbytype(accessType, accessName)));
+		dropdown = getWait().until(ExpectedConditions.presenceOfElementLocated(getelementbytype(accessType, accessName)));
 		selectList = new Select(dropdown);
 		
 		if(optionBy.equals("selectByIndex"))
@@ -87,7 +94,7 @@ public class InputMethods extends SelectElementByType implements BaseTest
 	*/
 	public void unselectAllOptionFromMultiselectDropdown(String accessType, String accessName)
 	{
-		dropdown = wait.until(ExpectedConditions.presenceOfElementLocated(getelementbytype(accessType, accessName)));
+		dropdown = getWait().until(ExpectedConditions.presenceOfElementLocated(getelementbytype(accessType, accessName)));
 		selectList = new Select(dropdown);
 		selectList.deselectAll();
 	}
@@ -98,7 +105,7 @@ public class InputMethods extends SelectElementByType implements BaseTest
 	*/
 	public void deselectOptionFromDropdown(String accessType, String optionBy, String option, String accessName) 
 	{
-		dropdown = wait.until(ExpectedConditions.presenceOfElementLocated(getelementbytype(accessType, accessName)));
+		dropdown = getWait().until(ExpectedConditions.presenceOfElementLocated(getelementbytype(accessType, accessName)));
 		selectList = new Select(dropdown);
 		
 		if(optionBy.equals("selectByIndex"))
@@ -115,7 +122,7 @@ public class InputMethods extends SelectElementByType implements BaseTest
 	*/
 	public void checkCheckbox(String accessType, String accessName)
 	{
-		WebElement checkbox= wait.until(ExpectedConditions.presenceOfElementLocated(getelementbytype(accessType, accessName)));
+		WebElement checkbox= getWait().until(ExpectedConditions.presenceOfElementLocated(getelementbytype(accessType, accessName)));
 		if (!checkbox.isSelected())
 			checkbox.click();
 	}
@@ -126,7 +133,7 @@ public class InputMethods extends SelectElementByType implements BaseTest
 	*/
 	public void uncheckCheckbox(String accessType, String accessName)
 	{
-		WebElement checkbox= wait.until(ExpectedConditions.presenceOfElementLocated(getelementbytype(accessType, accessName)));
+		WebElement checkbox= getWait().until(ExpectedConditions.presenceOfElementLocated(getelementbytype(accessType, accessName)));
 		if (checkbox.isSelected())
 			checkbox.click();
 	}
@@ -137,7 +144,7 @@ public class InputMethods extends SelectElementByType implements BaseTest
 	*/
 	public void toggleCheckbox(String accessType, String accessName)
 	{
-		wait.until(ExpectedConditions.presenceOfElementLocated(getelementbytype(accessType, accessName))).click();
+		getWait().until(ExpectedConditions.presenceOfElementLocated(getelementbytype(accessType, accessName))).click();
 	}
 	
 	/** Method to select radio button
@@ -146,7 +153,7 @@ public class InputMethods extends SelectElementByType implements BaseTest
 	*/
 	public void selectRadioButton(String accessType, String accessName)
 	{
-		WebElement radioButton = wait.until(ExpectedConditions.presenceOfElementLocated(getelementbytype(accessType, accessName)));
+		WebElement radioButton = getWait().until(ExpectedConditions.presenceOfElementLocated(getelementbytype(accessType, accessName)));
 		if(!radioButton.isSelected())
 			radioButton.click();
 	}
@@ -160,7 +167,7 @@ public class InputMethods extends SelectElementByType implements BaseTest
 	*/
 	public void selectOptionFromRadioButtonGroup(String accessType, String option, String by, String accessName)
 	{
-		List<WebElement> radioButtonGroup = driver.findElements(getelementbytype(accessType, accessName));
+		List<WebElement> radioButtonGroup = getDriver().findElements(getelementbytype(accessType, accessName));
 		for(WebElement rb : radioButtonGroup)
 		{
 			if(by.equals("value"))

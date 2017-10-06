@@ -1,6 +1,5 @@
 package env;
 
-import java.util.Collections;
 import org.openqa.selenium.*;
 import org.openqa.selenium.chrome.*;
 import org.openqa.selenium.phantomjs.PhantomJSDriver;
@@ -12,32 +11,65 @@ import org.openqa.selenium.firefox.FirefoxDriver;
 import org.openqa.selenium.firefox.FirefoxOptions;
 import org.openqa.selenium.remote.ErrorHandler;
 
-/**
- * Created by tom on 24/02/17.
- */
+
 public class DriverUtil {
-    public static long DEFAULT_WAIT = 20;
-    private static int DEFAULT_WINDOW_WIDTH = 1920;
-    private static int DEFAULT_WINDOW_HEIGHT = 1080;
+    final public static long DEFAULT_WAIT = 20;
+    final private static int DEFAULT_WINDOW_WIDTH = 1920;
+    final private static int DEFAULT_WINDOW_HEIGHT = 1080;
 	protected static WebDriver driver;
 
-    public static WebDriver getDefaultDriver() {
+	public static WebDriver setUpDriver() {
 		if (driver != null) {
 			return driver;
 		}
-        System.setProperty("webdriver.chrome.driver", "./chromedriver");
-        System.setProperty("webdriver.gecko.driver", "./geckodriver");
-        DesiredCapabilities capabilities = null; //DesiredCapabilities.phantomjs();
+		System.out.println("DriverUtil.setUpDriver init");
+		System.setProperty("webdriver.chrome.driver", "./chromedriver");
+		System.setProperty("webdriver.gecko.driver", "./geckodriver");
+		DesiredCapabilities capabilities = null; //DesiredCapabilities.phantomjs();
 		capabilities = DesiredCapabilities.firefox();
-        capabilities.setJavascriptEnabled(true);
-        capabilities.setCapability("takesScreenshot", true);
-        driver = chooseDriver(capabilities);
-        driver.manage().timeouts().setScriptTimeout(DEFAULT_WAIT,
-                TimeUnit.SECONDS);
-        driver.manage().window().setSize(new Dimension(DEFAULT_WINDOW_WIDTH,
-                DEFAULT_WINDOW_HEIGHT));
-        return driver;
+		capabilities.setJavascriptEnabled(true);
+		capabilities.setCapability("takesScreenshot", true);
+		driver = chooseDriver(capabilities);
+		driver.manage().timeouts().setScriptTimeout(DEFAULT_WAIT,
+				TimeUnit.SECONDS);
+		driver.manage().window().setSize(chooseWindowDimension());
+		return driver;
+	}
+
+    public static WebDriver getDefaultDriver() {
+		return driver;
     }
+
+    private static final String WINDOW_SIZE = "WindowSize";
+
+	/**
+	 * By default, window size is 1920x1080
+	 *
+	 * Override it by passing -DwindowSize={width}x{height} e.g. -DwindowSize=1024x768
+	 *
+	 * @return the dimension of the WebDriver window size.
+	 */
+	private static Dimension chooseWindowDimension() {
+    	final String windowSizeStr = System.getProperty(WINDOW_SIZE);
+
+    	if (windowSizeStr != null) {
+    		String[] sizes = windowSizeStr.split("x");
+			if (sizes.length == 2) {
+				try {
+					int w = Integer.parseUnsignedInt(sizes[0]);
+					int h = Integer.parseUnsignedInt(sizes[1]);
+					return new Dimension(w, h);
+				} catch (NumberFormatException ex) {
+					// malformed window size
+					System.out.println("Malformed windowSize param: " + windowSizeStr);
+				}
+			} else {
+				System.out.println("Malformed windowSize param: " + windowSizeStr);
+			}
+		}
+
+		return new Dimension(DEFAULT_WINDOW_WIDTH, DEFAULT_WINDOW_HEIGHT);
+	}
 
     /**
      * By default to web driver will be PhantomJS
@@ -98,14 +130,31 @@ public class DriverUtil {
     }
 
 	public static void closeDriver() {
+    	System.out.println("DriverUtil.closeDriver");
 		if (driver != null) {
 			try {
+				System.out.println("DriverUtil.closeDriver closing...");
 				driver.close();
-				driver.quit(); // fails in current geckodriver! TODO: Fixme
-			} catch (NoSuchMethodError nsme) { // in case quit fails
+				System.out.println("DriverUtil.closeDriver closed");
+				// driver.quit(); // fails in current geckodriver! TODO: Fixme
+			} catch (NoSuchMethodError nsme) {
+				// in case quit fails
+				System.out.println("DriverUtil.closeDriver: NoSuchMethodError");
+				nsme.printStackTrace();
 			} catch (NoSuchSessionException nsse) { // in case close fails
-			} catch (SessionNotCreatedException snce) {} // in case close fails
+				System.out.println("DriverUtil.closeDriver: NoSuchSessionException");
+				nsse.printStackTrace();
+			} catch (SessionNotCreatedException snce) {
+				System.out.println("DriverUtil.closeDriver: SessionNotCreatedException");
+				snce.printStackTrace();
+			} // in case close fails
+
 			driver = null;
+		} else {
+			System.out.println("DriverUtil.closeDriver Driver already closed...");
 		}
+
 	}
+
+
 }

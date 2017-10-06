@@ -4,6 +4,7 @@ import cucumber.api.Scenario;
 import cucumber.api.java.After;
 import java.io.IOException;
 
+import cucumber.api.java.Before;
 import methods.TestCaseFailed;
 import cucumber.api.java.en.Then;
 import cucumber.runtime.ScenarioImpl;
@@ -14,10 +15,12 @@ import java.util.Collection;
 import org.apache.commons.io.FileUtils;
 import org.openqa.selenium.OutputType;
 import org.openqa.selenium.TakesScreenshot;
-import org.openqa.selenium.WebDriver;
 
 public class PredefinedStepDefinitions implements BaseTest {
-	protected WebDriver driver = DriverUtil.getDefaultDriver();
+	@Before
+	public void setUp() {
+		DriverUtil.setUpDriver();
+	}
 	//Navigation Steps
 	
 	//Step to navigate to specified URL
@@ -45,7 +48,7 @@ public class PredefinedStepDefinitions implements BaseTest {
 	@Then("^I refresh page$")
 	public void refresh_page()
 	{
-		driver.navigate().refresh();
+		DriverUtil.getDefaultDriver().navigate().refresh();
 	}
 	
 	// Switch between windows
@@ -526,10 +529,11 @@ public class PredefinedStepDefinitions implements BaseTest {
 	{
 		configObj.printDesktopConfiguration();
 	}
+	
 	@After
-	public final void takeScreenShot(Scenario scenario) {
-		if (scenario.isFailed()) {
-			TakesScreenshot ts = (TakesScreenshot) driver;
+	public final void tearDown(Scenario scenario) {
+		if (scenario != null && scenario.isFailed()) {
+			TakesScreenshot ts = (TakesScreenshot) DriverUtil.getDefaultDriver();
 			File srcFile = ts.getScreenshotAs(OutputType.FILE);
 			try {
 				ScenarioImpl impl = (ScenarioImpl) scenario;
@@ -542,16 +546,16 @@ public class PredefinedStepDefinitions implements BaseTest {
 				*/
 				String name = "Screenshots/" + impl.getId().replaceAll("\\W", "_");
 				FileUtils.copyFile(srcFile, new File(name + ".png"));
-				System.out.println("URL: " + driver.getCurrentUrl());
-				System.out.println("src: " + driver.getPageSource());
+				// System.out.println("URL: " + getDriver().getCurrentUrl());
+				// System.out.println("src: " + getDriver().getPageSource());
 			} catch (IOException ex) {
 				//Logger.getLogger(SmapScenario.class.getName()).log(Level.SEVERE, null, ex);
 			}
 		}
-	}
-	
-	@After
-	public final void tearDown() {
+
+		System.out.println("PredefinedSteps.tearDown");
 		DriverUtil.closeDriver();
 	}
+
+
 }
