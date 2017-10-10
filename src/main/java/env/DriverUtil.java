@@ -13,20 +13,19 @@ import org.openqa.selenium.remote.ErrorHandler;
 
 
 public class DriverUtil {
-    final public static long DEFAULT_WAIT = 20;
-    final private static int DEFAULT_WINDOW_WIDTH = 1920;
-    final private static int DEFAULT_WINDOW_HEIGHT = 1080;
-	protected static WebDriver driver;
+    public final static long DEFAULT_WAIT = 20;
+	public final static int DEFAULT_WINDOW_WIDTH = 1920;
+	public final static int DEFAULT_WINDOW_HEIGHT = 1080;
+	private static WebDriver driver;
 
-	public static WebDriver setUpDriver() {
+	public static WebDriver getDefaultDriver() {
 		if (driver != null) {
 			return driver;
 		}
 		System.out.println("DriverUtil.setUpDriver init");
 		System.setProperty("webdriver.chrome.driver", "./chromedriver");
 		System.setProperty("webdriver.gecko.driver", "./geckodriver");
-		DesiredCapabilities capabilities = null; //DesiredCapabilities.phantomjs();
-		capabilities = DesiredCapabilities.firefox();
+		DesiredCapabilities capabilities = DesiredCapabilities.firefox(); //DesiredCapabilities.phantomjs();
 		capabilities.setJavascriptEnabled(true);
 		capabilities.setCapability("takesScreenshot", true);
 		driver = chooseDriver(capabilities);
@@ -35,10 +34,6 @@ public class DriverUtil {
 		driver.manage().window().setSize(chooseWindowDimension());
 		return driver;
 	}
-
-    public static WebDriver getDefaultDriver() {
-		return driver;
-    }
 
     private static final String WINDOW_SIZE = "WindowSize";
 
@@ -75,8 +70,8 @@ public class DriverUtil {
      * By default to web driver will be PhantomJS
      *
      * Override it by passing -DWebDriver=Chrome to the command line arguments
-     * @param capabilities
-     * @return
+     * @param capabilities - desired capabilities
+     * @return - FirefoxDriver by default
      */
     private static WebDriver chooseDriver(DesiredCapabilities capabilities) {
 		String preferredDriver = System.getProperty("WebDriver", "Firefox");
@@ -117,12 +112,11 @@ public class DriverUtil {
 					options.addArguments("-headless", "-safe-mode");
 				}
 				capabilities.setCapability(FirefoxOptions.FIREFOX_OPTIONS, options);
-				final FirefoxDriver firefox = new FirefoxDriver(capabilities);
-				return firefox;
+				return new FirefoxDriver(capabilities);
 		}
     }
 
-    public static WebElement waitAndGetElementByCssSelector(WebDriver driver, String selector,
+	public static WebElement waitAndGetElementByCssSelector(WebDriver driver, String selector,
                                                             int seconds) {
         By selection = By.cssSelector(selector);
         return (new WebDriverWait(driver, seconds)).until( // ensure element is visible!

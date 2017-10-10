@@ -2,24 +2,23 @@ package info.seleniumcucumber.stepdefinitions;
 
 import cucumber.api.Scenario;
 import cucumber.api.java.After;
-import java.io.IOException;
-
 import cucumber.api.java.Before;
-import methods.TestCaseFailed;
 import cucumber.api.java.en.Then;
 import cucumber.runtime.ScenarioImpl;
 import env.BaseTest;
 import env.DriverUtil;
-import java.io.File;
-import java.util.Collection;
+import methods.TestCaseFailed;
 import org.apache.commons.io.FileUtils;
 import org.openqa.selenium.OutputType;
 import org.openqa.selenium.TakesScreenshot;
 
+import java.io.File;
+import java.io.IOException;
+
 public class PredefinedStepDefinitions implements BaseTest {
 	@Before
 	public void setUp() {
-		DriverUtil.setUpDriver();
+		// DriverUtil.setUpDriver();
 	}
 	//Navigation Steps
 	
@@ -537,7 +536,7 @@ public class PredefinedStepDefinitions implements BaseTest {
 			File srcFile = ts.getScreenshotAs(OutputType.FILE);
 			try {
 				ScenarioImpl impl = (ScenarioImpl) scenario;
-				Collection<String> tags = impl.getSourceTagNames();
+				// Collection<String> tags = impl.getSourceTagNames();
 				/*
 				String name = "Scenario";
 				for (String t : tags) {
