@@ -15,11 +15,10 @@ import env.DriverUtil;
 import org.openqa.selenium.WebDriver;
 
 public class ScreenShotMethods implements BaseTest {
-	protected WebDriver driver = DriverUtil.getDefaultDriver();
 	/** Method to take screen shot and save in ./Screenshots folder*/
 	public void takeScreenShot() throws IOException
 	{
-		File scrFile = ((TakesScreenshot)driver).getScreenshotAs(OutputType.FILE);
+		File scrFile = ((TakesScreenshot) getDriver()).getScreenshotAs(OutputType.FILE);
 		
 		DateFormat dateFormat = new SimpleDateFormat("yyyyMMddHHmmss");
 		Calendar cal = Calendar.getInstance();
@@ -39,6 +38,10 @@ public class ScreenShotMethods implements BaseTest {
 		/*DateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
 		Calendar cal = Calendar.getInstance();
 		System.out.println(dateFormat.format(cal.getTime()));*/
+	}
+
+	public WebDriver getDriver() {
+		return DriverUtil.getDefaultDriver();
 	}
 	 /* cur_time = Time.now.strftime('%Y%m%d%H%M%S%L')
 	  $driver.save_screenshot('./features/screenshots/screenshot' + cur_time + '.png')*/

@@ -9,7 +9,6 @@ import env.BaseTest;
 
 public class ClickElementsMethods extends SelectElementByType implements BaseTest
 {
-	//SelectElementByType eleType= new SelectElementByType();
 	private WebElement element=null;
 	
 	/** Method to click on an element
@@ -18,7 +17,7 @@ public class ClickElementsMethods extends SelectElementByType implements BaseTes
 	*/
 	public void click(String accessType, String accessName)
 	{
-		element = wait.until(ExpectedConditions.presenceOfElementLocated(getelementbytype(accessType, accessName)));
+		element = getWait().until(ExpectedConditions.presenceOfElementLocated(getelementbytype(accessType, accessName)));
 		element.click();
 	}
 	
@@ -28,20 +27,20 @@ public class ClickElementsMethods extends SelectElementByType implements BaseTes
 	*/
 	public void clickForcefully(String accessType, String accessName)
 	{
-		element = wait.until(ExpectedConditions.presenceOfElementLocated(getelementbytype(accessType, accessName)));
-		JavascriptExecutor executor = (JavascriptExecutor)driver;
+		element = getWait().until(ExpectedConditions.presenceOfElementLocated(getelementbytype(accessType, accessName)));
+		JavascriptExecutor executor = (JavascriptExecutor) getDriver();
 		executor.executeScript("arguments[0].click();",element);
 	}
 	
 	/** Method to Double click on an element
 	@param accessType : String : Locator type (id, name, class, xpath, css)
-	@param accessName : String : Locator value
+	@param accessValue : String : Locator value
 	*/
 	public void doubleClick(String accessType, String accessValue)
 	{
-		element = wait.until(ExpectedConditions.presenceOfElementLocated(getelementbytype(accessType, accessValue)));
+		element = getWait().until(ExpectedConditions.presenceOfElementLocated(getelementbytype(accessType, accessValue)));
 
-		Actions action = new Actions(driver);
+		Actions action = new Actions(getDriver());
 		action.moveToElement(element).doubleClick().perform();
 	}
 }

@@ -7,11 +7,16 @@ import org.openqa.selenium.support.ui.WebDriverWait;
 
 public class SelectElementByType 
 {
-	protected WebDriver driver;
-	protected WebDriverWait wait;
+	public WebDriver getDriver() {
+		return DriverUtil.getDefaultDriver();
+	}
+
+	public WebDriverWait getWait() {
+		return new WebDriverWait(getDriver(), 30);
+	}
+
 	public SelectElementByType() {
-		driver = DriverUtil.getDefaultDriver();
-		wait = new WebDriverWait(driver, 30);
+
 	}
 	/**Method to select element 'by' type
 	 * @param type : String : 'By' type
