@@ -127,10 +127,9 @@ public class DriverUtil {
     	System.out.println("DriverUtil.closeDriver");
 		if (driver != null) {
 			try {
-				System.out.println("DriverUtil.closeDriver closing...");
-				driver.close();
+				System.out.println("DriverUtil.closeDriver quiting...");
+				driver.quit();
 				System.out.println("DriverUtil.closeDriver closed");
-				// driver.quit(); // fails in current geckodriver! TODO: Fixme
 			} catch (NoSuchMethodError nsme) {
 				// in case quit fails
 				System.out.println("DriverUtil.closeDriver: NoSuchMethodError");
